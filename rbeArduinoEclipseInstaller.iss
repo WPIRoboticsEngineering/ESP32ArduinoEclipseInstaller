@@ -1,5 +1,5 @@
 #define MyAppName "WPI RBE ESP32 Development Toolchain"
-#define MyAppSlug "wpirbeesp32"
+#define MyAppSlug "WPI-RBE-esp32"
 #define MyAppPublisher "Worcester Polytechnic Institute"
 #define MyAppURL "https://github.com/WPIRoboticsEngineering/"
 #define MyAppOutput "."
@@ -19,7 +19,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName=C:\RBE\
 DefaultGroupName={#MyAppName}
 LicenseFile={#MyAppPath}\LICENSE.txt
 OutputDir={#MyAppOutput}
@@ -35,18 +35,20 @@ Name: english; MessagesFile: compiler:Default.isl
 
 [Files]
 Source: {#MyAppPath}\*; DestDir: C:\RBE\; Flags: recursesubdirs createallsubdirs; Languages: ; Excludes: .* 
-;Source: .\driver\*; DestDir: C:\RBE\driver; Excludes: .*
-;Source: .\driver\*; DestDir: {win}\inf; Excludes: .*
+Source: {#MyAppPath}\..\driver\*; DestDir: C:\RBE\driver; Excludes: .*
+Source: {#MyAppPath}\..\driver\*; DestDir: {win}\inf; Excludes: .*
+Source: {#MyAppPath}\..\sloeber.ico; DestDir: C:\RBE\sloeber\; Excludes: .*
+
+[InstallDelete] 
+Type: files; Name: "{userappdata}\Arduino15\preferences.txt"
+
+[Dirs]
+Name: C:\RBE\sloeber\arduinoPlugin\libraries; Attribs: readonly
 
 [Run]
-;Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultInstall 128 {app}\{#MyAppSlug}-{#MyAppVersion}\driver\NRDyIO.inf"; WorkingDir: {app}\{#MyAppSlug}-{#MyAppVersion}\driver\; Flags: 32bit;
+Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultInstall 128 C:\RBE\driver\silabser.inf"; WorkingDir: C:\RBE\driver\; 
 
 [Icons]
-;Name: {group}\BowlerStudio; Filename: {app}\{#MyAppSlug}-{#MyAppVersion}\bin\BowlerStudio.jar 
-;Name: {group}\{#MyAppVerName}; Filename: {app}\{#MyAppSlug}-{#MyAppVersion}\
-;Name: {commondesktop}\BowlerStudio; Filename: {app}\{#MyAppSlug}-{#MyAppVersion}\bin\BowlerStudio.jar; WorkingDir: {app}\{#MyAppSlug}-{#MyAppVersion}\bin\; Comment: "Commonwealth Robotics BowlerStudio";IconFilename: {app}\{#MyAppSlug}-{#MyAppVersion}\bin\NeuronRobotics.ico;
+Name: {commondesktop}\Arduino-RBE-ESP32; Filename: C:\RBE\arduino-1.8.5\arduino.exe; WorkingDir: C:\RBE\arduino-1.8.5\; Comment: "WPI RBE Esp32 Arduino";IconFilename: C:\RBE\arduino-1.8.5\lib\arduino_icon.ico;
+Name: {commondesktop}\Sloeber-RBE-ESP32; Filename: C:\RBE\sloeber\sloeber-ide.exe; WorkingDir: C:\RBE\sloeber\; Comment: "WPI RBE Esp32 Sloeber";IconFilename: C:\RBE\sloeber\sloeber.ico;
 
-
-[Registry]
-Root: HKLM; SubKey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment";ValueType:string; ValueName: "BOWLER_HOME"; ValueData: {app}\{#MyAppSlug}-{#MyAppVersion};  Flags: preservestringtype ;
-Root: HKLM; SubKey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment";ValueType:string; ValueName: "OPENCV_DIR"; ValueData: {app}\{#MyAppSlug}-{#MyAppVersion}\build\CVARCH\vc11;  Flags: preservestringtype
