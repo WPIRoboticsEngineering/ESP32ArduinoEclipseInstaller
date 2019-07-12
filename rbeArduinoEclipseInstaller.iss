@@ -4,8 +4,8 @@
 #define MyAppURL "https://github.com/WPIRoboticsEngineering/"
 #define MyAppOutput "."
 
-#define MyAppVersion "0.0.1"
-#define MyAppVerName "WPI RBE ESP32 Development Toolchain 0.0.1"
+#define MyAppVersion "0.0.2"
+#define MyAppVerName "WPI RBE ESP32 Development Toolchain 0.0.2"
 #define MyAppPath ".\RBE\"
 
 
@@ -35,8 +35,8 @@ Name: english; MessagesFile: compiler:Default.isl
 
 [Files]
 Source: {#MyAppPath}\*; DestDir: C:\RBE\; Flags: recursesubdirs createallsubdirs; Languages: ; Excludes: .* 
-Source: {#MyAppPath}\..\driver\*; DestDir: C:\RBE\driver; Excludes: .*
-Source: {#MyAppPath}\..\driver\*; DestDir: {win}\inf; Excludes: .*
+Source: {#MyAppPath}\driver\*; DestDir: C:\RBE\driver; Excludes: .*
+Source: {#MyAppPath}\driver\*; DestDir: {win}\inf; Excludes: .*
 Source: {#MyAppPath}\..\sloeber.ico; DestDir: C:\RBE\sloeber\; Excludes: .*
 
 [InstallDelete] 
@@ -44,6 +44,9 @@ Type: files; Name: "{userappdata}\Arduino15\preferences.txt"
 
 [Dirs]
 Name: C:\RBE\sloeber\arduinoPlugin\libraries; Attribs: readonly
+Name: C:\RBE\eclipse-workspace; Permissions: users-full
+Name: C:\RBE\ArduinoAppData; Permissions: users-full
+Name: C:\RBE\ArduinoSketchbook; Permissions: users-full
 
 [Run]
 Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultInstall 128 C:\RBE\driver\silabser.inf"; WorkingDir: C:\RBE\driver\; 
