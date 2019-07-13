@@ -3,7 +3,8 @@
 START=$PWD
 VERSION=$1
 DIR=rbe-inst
-
+OUTDIR=rbe-inst-output
+INST=$OUTDIR/WPI-RBE-esp32-$VERSION.exe
 unzipifiy(){
 	testget $1
 	unzip -qq $1 -d $2
@@ -19,11 +20,13 @@ testget () {
 
 if (! test -z "$VERSION" ) then
 	rm -rf $DIR
+	rm -rf $OUTDIR
+	mkdir $OUTDIR
 	mkdir  $DIR	
 	if (! test -e /home/hephaestus/.wine/drive_c/rbe-inst) then
 		echo 'Linking build dirs for wine'
-		ln -s $START/$DIR/ 	$HOME/.wine/drive_c/
-		ln -s $START/		$HOME/.wine/drive_c/
+		ln -s $START/$DIR/ 					$HOME/.wine/drive_c/
+		ln -s $START/rbe-inst-output		$HOME/.wine/drive_c/
 	fi
 		
 	testget GithubPublish.jar 
@@ -32,22 +35,21 @@ if (! test -z "$VERSION" ) then
 	unzipifiy sloeber.zip $DIR
 	unzipifiy arduino-1.8.5.zip $DIR
 
-	exit 0
-	rm windows.iss
-	cp TEMPLATEwindows.iss windows.iss
-	sed -i s/VER/"$VERSION"/g windows.iss
-	sed -i s/CVARCH/x64/g windows.iss
-	sed -i s/JAVAARCH/HKLM64/g windows.iss
-	echo adding Bowler Studio For Windows
 
+	rm -rf run.iss
+	cp TEMPLATErbeArduinoEclipseInstaller.iss run.iss
+	sed -i s/VER/"$VERSION"/g run.iss
 	echo Running wine
-	wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "C:\rbe-inst\rbeArduinoEclipseInstaller.iss"
-	rm -rf $DIR
-	#if ( wine "C:\Program Files (x86)\Inno Setup 5\Compil32.exe" /cc "C:\installer-scripts\windows\windows.iss") then
-	#	echo wine ok
-	#else
-	#	wine $START/tools/isetup-5.4.3.exe
-	#	exit 1
-	#fi
+
+	wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "C:\rbe-inst\run.iss"
+	
+	if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "C:\rbe-inst\run.iss") then
+		echo wine ok
+	else
+		testget isetup-5.4.3.exe
+		wine isetup-5.4.3.exe
+		exit 1
+	fi
+	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
 
 fi
