@@ -51,7 +51,8 @@ if (! test -z "$VERSION" ) then
 	cp TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/run.iss
 	cp LICENSE.txt $DIR
 	cp sloeber.ico $DIR/sloeber/
-	cp org.eclipse.ui.ide.prefs $DIR/sloeber/configuration/.settings\
+	cp org.eclipse.ui.ide.prefs $DIR/sloeber/configuration/.settings/
+	cp config.ini $DIR/sloeber/configuration/
 	
 	sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
 	
