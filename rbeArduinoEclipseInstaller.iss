@@ -38,6 +38,7 @@ Source: {#MyAppPath}\*; DestDir: C:\RBE\; Flags: recursesubdirs createallsubdirs
 Source: {#MyAppPath}\driver\*; DestDir: C:\RBE\driver; Excludes: .*
 Source: {#MyAppPath}\driver\*; DestDir: {win}\inf; Excludes: .*
 Source: {#MyAppPath}\..\sloeber.ico; DestDir: C:\RBE\sloeber\; Excludes: .*
+Source: {#MyAppPath}\..\org.eclipse.ui.ide.prefs; DestDir: C:\RBE\sloeber\configuration\.settings\; Excludes: .*
 
 [InstallDelete] 
 Type: files; Name: "{userappdata}\Arduino15\preferences.txt"
