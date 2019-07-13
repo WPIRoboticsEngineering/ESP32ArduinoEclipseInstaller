@@ -55,6 +55,7 @@ if (! test -z "$VERSION" ) then
 	cp config.ini $DIR/sloeber/configuration/
 	cp io.sloeber.core.ui.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 	cp io.sloeber.arduino.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+	cp preferences.txt $DIR/arduino-1.8.5/lib/
 	
 	sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
 	

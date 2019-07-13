@@ -42,11 +42,11 @@
 # Note that this path must exist already otherwise it won't see
 # the sketchbook folder, and will instead assume the sketchbook
 # has gone missing, and that it should instead use the default.
-sketchbook.path=C:\RBE\ArduinoSketchbook
+sketchbook.path=C:/RBE/ArduinoSketchbook
 
 # if you don't want settings to go into "application data" on windows
 # and "library" on macosx, set this to the alternate location.
-settings.path=C:\RBE\ArduinoAppData
+settings.path=C:/RBE/ArduinoAppData
 
 # temporary build path, normally this goes into the default
 # "temp" folder for that platform (as defined by java)
