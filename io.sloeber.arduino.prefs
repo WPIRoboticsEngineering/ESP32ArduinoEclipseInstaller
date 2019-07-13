@@ -1,0 +1,7 @@
+Automatically\ import\ libraries=true
+FsStatus=1
+Private\ Library\ Path=C\:\\RBE\\ArduinoSketchbook\\libraries
+Private\ hardware\ Path=C\:\\RBE\\arduino-1.8.5\\hardware
+Use\ the\ algoritm\ to\ find\ the\ toolchain\ like\ Arduino\ IDE=true
+add\ pragma\ once\ to\ headers=true
+eclipse.preferences.version=1

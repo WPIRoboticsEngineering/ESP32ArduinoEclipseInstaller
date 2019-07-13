@@ -53,6 +53,8 @@ if (! test -z "$VERSION" ) then
 	cp sloeber.ico $DIR/sloeber/
 	cp org.eclipse.ui.ide.prefs $DIR/sloeber/configuration/.settings/
 	cp config.ini $DIR/sloeber/configuration/
+	cp io.sloeber.core.ui.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+	cp io.sloeber.arduino.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 	
 	sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
 	
