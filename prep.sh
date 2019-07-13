@@ -8,11 +8,12 @@ INST=$OUTDIR/WPI-RBE-esp32-$VERSION.exe
 INSTDIR=rbe-inst-iss
 unzipifiy(){
 	testget $1
+	echo "Unzipping $1 to $2"
 	unzip -qq $1 -d $2
 }
 
 testget () {
-  if [ -f $1 ]; then
+   if [ -f $1 ]; then
     	echo "$1 exist"
     else
     	wget https://github.com/WPIRoboticsEngineering/ESP32ArduinoEclipseInstaller/releases/download/0.0.0/$1
@@ -32,18 +33,19 @@ testlink () {
 if (! test -z "$VERSION" ) then
 	rm -rf $INST
 	
-	testlink $DIR 		$START
-	testlink $OUTDIR    $START
-	testlink $INSTDIR   $START
-		
 	testget GithubPublish.jar 
 	if (! test -e $DIR) then
+		echo "Making install dir $DIR"
 		mkdir  $DIR	
 		unzipifiy driver.zip 	$DIR
 		unzipifiy WorkingDirectories.zip $DIR
 		unzipifiy sloeber.zip $DIR
 		unzipifiy arduino-1.8.5.zip $DIR
 	fi
+	
+	testlink $DIR 		$START
+	testlink $OUTDIR    $START
+	testlink $INSTDIR   $START
 
 	rm -rf $INSTDIR/run.iss
 	cp TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/run.iss
