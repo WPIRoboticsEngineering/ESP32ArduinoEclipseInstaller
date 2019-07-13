@@ -4,8 +4,8 @@
 #define MyAppURL "https://github.com/WPIRoboticsEngineering/"
 #define MyAppOutput "."
 
-#define MyAppVersion "0.0.2"
-#define MyAppVerName "WPI RBE ESP32 Development Toolchain 0.0.2"
+#define MyAppVersion "0.0.3"
+#define MyAppVerName "WPI RBE ESP32 Development Toolchain 0.0.3"
 #define MyAppPath ".\RBE\"
 
 
