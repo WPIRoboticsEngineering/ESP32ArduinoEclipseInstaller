@@ -1,4 +1,4 @@
-Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.core.runtime\.settings\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.core.runtime\.settings; 	Flags: recursesubdirs createallsubdirs;
+ Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.core.runtime\.settings\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.core.runtime\.settings; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.rse.core\profiles\PRF.desktop-tlp1o5p_32629\\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.rse.core\profiles\PRF.desktop-tlp1o5p_32629\; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.rse.core\initializerMarks\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.rse.core\initializerMarks; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.ui.workbench\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.ui.workbench; 	Flags: recursesubdirs createallsubdirs;
