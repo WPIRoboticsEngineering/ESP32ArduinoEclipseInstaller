@@ -58,7 +58,7 @@ if (! test -z "$VERSION" ) then
 	cp io.sloeber.arduino.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 	cp org.eclipse.egit.core.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 	cp preferences.txt 		$DIR/arduino-1.8.5/lib/
-
+	chmod -R 7777 $DIR/eclipse-workspace/
 	sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
 	
 	echo Running wine C:\$INSTDIR\run.iss
