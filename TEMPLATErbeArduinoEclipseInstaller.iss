@@ -47,6 +47,7 @@ Name: C:\RBE\sloeber\arduinoPlugin\libraries; Attribs: readonly
 Name: C:\RBE\eclipse-workspace; Permissions: users-full
 Name: C:\RBE\ArduinoAppData; Permissions: users-full
 Name: C:\RBE\ArduinoSketchbook; Permissions: users-full
+Name: C:\RBE\gitRbe; Permissions: users-full
 
 [Run]
 Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultInstall 128 C:\RBE\driver\silabser.inf"; WorkingDir: C:\RBE\driver\; 

@@ -36,7 +36,8 @@ if (! test -z "$VERSION" ) then
 	testget GithubPublish.jar 
 	if (! test -e $DIR) then
 		echo "Making install dir $DIR"
-		mkdir  $DIR	
+		mkdir  $DIR
+		mkdir  $DIR/gitRbe/	
 		unzipifiy driver.zip 	$DIR
 		unzipifiy WorkingDirectories.zip $DIR
 		unzipifiy sloeber.zip $DIR
@@ -55,8 +56,9 @@ if (! test -z "$VERSION" ) then
 	cp config.ini $DIR/sloeber/configuration/
 	cp io.sloeber.core.ui.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 	cp io.sloeber.arduino.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+	cp org.eclipse.egit.core.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 	cp preferences.txt $DIR/arduino-1.8.5/lib/
-	
+
 	sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
 	
 	echo Running wine C:\$INSTDIR\run.iss
