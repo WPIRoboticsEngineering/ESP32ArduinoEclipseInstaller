@@ -34,7 +34,7 @@ Name: english; MessagesFile: compiler:Default.isl
 
 
 [Files]
-Source: {#MyAppPath}\*; DestDir: C:\RBE\; Flags: recursesubdirs createallsubdirs; Languages: ; Excludes: .* 
+Source: {#MyAppPath}\*; DestDir: C:\RBE\; Flags: recursesubdirs createallsubdirs; Languages: ;  
 Source: {#MyAppPath}\driver\*; DestDir: C:\RBE\driver; Excludes: .*
 Source: {#MyAppPath}\driver\*; DestDir: {win}\inf; Excludes: .*
 

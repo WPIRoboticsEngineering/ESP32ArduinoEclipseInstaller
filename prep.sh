@@ -50,14 +50,14 @@ if (! test -z "$VERSION" ) then
 
 	rm -rf $INSTDIR/run.iss
 	cp TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/run.iss
-	cp LICENSE.txt $DIR
-	cp sloeber.ico $DIR/sloeber/
-	cp org.eclipse.ui.ide.prefs $DIR/sloeber/configuration/.settings/
-	cp config.ini $DIR/sloeber/configuration/
-	cp io.sloeber.core.ui.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-	cp io.sloeber.arduino.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-	cp org.eclipse.egit.core.prefs $DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-	cp preferences.txt $DIR/arduino-1.8.5/lib/
+	cp LICENSE.txt 			$DIR
+	cp sloeber.ico 			$DIR/sloeber/
+	cp org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
+	cp config.ini 			$DIR/sloeber/configuration/
+	cp io.sloeber.core.ui.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+	cp io.sloeber.arduino.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+	cp org.eclipse.egit.core.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+	cp preferences.txt 		$DIR/arduino-1.8.5/lib/
 
 	sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
 	
