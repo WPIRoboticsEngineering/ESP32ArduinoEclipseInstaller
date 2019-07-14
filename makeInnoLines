@@ -1,0 +1,1 @@
+cat workspacedirs | awk '{ print "Source: {#MyAppPath}\\eclipse-workspace"$0"\\*; \tDestDir: C:\\RBE\\eclipse-workspace\\"$0"; \tFlags: recursesubdirs createallsubdirs;" }'>workspaceLines.txt
