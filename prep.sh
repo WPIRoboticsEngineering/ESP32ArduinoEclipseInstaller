@@ -31,7 +31,7 @@ testlink () {
 }
 
 if (! test -z "$VERSION" ) then
-	rm -rf $INST
+	rm -rf $OUTDIR/*
 	
 	testget GithubPublish.jar 
 	if (! test -e $DIR) then

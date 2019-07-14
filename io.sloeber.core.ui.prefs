@@ -1,6 +1,6 @@
 Build\ before\ upload\ option=ASK
 Clean\ Serial\ Monitor\ after\ upload=false
-Gui\ entry\ for\ private\ hardware\ paths=C\:\\RBE\\arduino-1.8.5\\hardware
-Gui\ entry\ for\ private\ library\ paths=C\:\\RBE\\ArduinoSketchbook\\libraries
+Gui\ entry\ for\ private\ hardware\ paths=C\:/RBE/ArduinoSketchbook/libraries
+Gui\ entry\ for\ private\ library\ paths=C\:/RBE/arduino-1.8.5/hardware
 Open\ serial\ connections\ with\ the\ monitor=true
 eclipse.preferences.version=1
