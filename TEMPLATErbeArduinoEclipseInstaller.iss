@@ -57,7 +57,8 @@ Source: {#MyAppPath}\driver\*; DestDir: {win}\inf; Excludes: .*
 Type: files; Name: "{userappdata}\Arduino15\preferences.txt"
 
 [Dirs]
-Name: C:\RBE\sloeber\arduinoPlugin\libraries; Attribs: readonly
+Name: C:\RBE\sloeber\arduinoPlugin\libraries; Attribs: readonly   Permissions: everyone-readexec 
+Name: C:\RBE\sloeber\arduinoPlugin\downloads; Attribs: readonly   Permissions: everyone-readexec 
 Name: C:\RBE\eclipse-workspace; Permissions: users-full
 Name: C:\RBE\ArduinoAppData; Permissions: users-full
 Name: C:\RBE\ArduinoSketchbook; Permissions: users-full
