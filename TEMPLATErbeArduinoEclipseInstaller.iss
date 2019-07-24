@@ -49,12 +49,12 @@ Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.mylyn.cont
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.ui.ide\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.ui.ide; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.mylyn\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.mylyn; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\; 	Flags: recursesubdirs createallsubdirs;
-Source: {#MyAppPath}\driver\*; DestDir: C:\RBE\driver; Excludes: .*
-Source: {#MyAppPath}\driver\*; DestDir: {win}\inf; Excludes: .*  
-
+Source: {#MyAppPath}\driver\*; DestDir: C:\RBE\driver; Excludes: .*  
+Source: {#MyAppPath}\driver\x86\*; DestDir: C:\RBE\driver\x86; Excludes: .* 
+Source: {#MyAppPath}\driver\x64\*; DestDir: C:\RBE\driver\x64; Excludes: .* 
 
 [InstallDelete] 
-Type: files; Name: "{userappdata}\Arduino15\preferences.txt"
+Type: files; Name: "{localappdata}\Arduino15\preferences.txt"
 
 [Dirs]
 Name: C:\RBE\sloeber\arduinoPlugin\libraries; Attribs: readonly;   Permissions: everyone-readexec 
@@ -82,4 +82,63 @@ Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultIn
 Name: {commondesktop}\Arduino-RBE-ESP32; Filename: C:\RBE\arduino-1.8.5\arduino.exe; WorkingDir: C:\RBE\arduino-1.8.5\; Comment: "WPI RBE Esp32 Arduino";IconFilename: C:\RBE\arduino-1.8.5\lib\arduino_icon.ico;
 Name: {commondesktop}\Sloeber-RBE-ESP32; Filename: C:\RBE\sloeber\sloeber-ide.exe; WorkingDir: C:\RBE\sloeber\; Comment: "WPI RBE Esp32 Sloeber";IconFilename: C:\RBE\sloeber\sloeber.ico;
 
+[Code]
 
+// Utility functions for Inno Setup
+//   used to add/remove programs from the windows firewall rules
+// Code originally from http://news.jrsoftware.org/news/innosetup/msg43799.html
+
+const
+  NET_FW_SCOPE_ALL = 0;
+  NET_FW_IP_VERSION_ANY = 2;
+
+procedure SetFirewallException(AppName,FileName:string);
+var
+  FirewallObject: Variant;
+  FirewallManager: Variant;
+  FirewallProfile: Variant;
+begin
+  try
+    FirewallObject := CreateOleObject('HNetCfg.FwAuthorizedApplication');
+    FirewallObject.ProcessImageFileName := FileName;
+    FirewallObject.Name := AppName;
+    FirewallObject.Scope := NET_FW_SCOPE_ALL;
+    FirewallObject.IpVersion := NET_FW_IP_VERSION_ANY;
+    FirewallObject.Enabled := True;
+    FirewallManager := CreateOleObject('HNetCfg.FwMgr');
+    FirewallProfile := FirewallManager.LocalPolicy.CurrentProfile;
+    FirewallProfile.AuthorizedApplications.Add(FirewallObject);
+  except
+  end;
+end;
+
+procedure RemoveFirewallException( FileName:string );
+var
+  FirewallManager: Variant;
+  FirewallProfile: Variant;
+begin
+  try
+    FirewallManager := CreateOleObject('HNetCfg.FwMgr');
+    FirewallProfile := FirewallManager.LocalPolicy.CurrentProfile;
+    FireWallProfile.AuthorizedApplications.Remove(FileName);
+  except
+  end;
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep=ssPostInstall then
+     SetFirewallException('arduino', 'C:\RBE\arduino-1.8.5\java\bin\javaw.exe');
+  if CurStep=ssPostInstall then 
+     SetFirewallException('sloeber-ide', 'C:\RBE\sloeber\sloeber-ide.exe');
+  
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+begin
+  if CurUninstallStep=usPostUninstall then
+     SetFirewallException('arduino', 'C:\RBE\arduino-1.8.5\java\bin\javaw.exe');
+  if CurUninstallStep=usPostUninstall then 
+     SetFirewallException('sloeber-ide', 'C:\RBE\sloeber\sloeber-ide.exe');
+  
+end;
