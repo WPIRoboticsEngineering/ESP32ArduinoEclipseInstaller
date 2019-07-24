@@ -87,11 +87,6 @@ Name: {commondesktop}\Sloeber-RBE-ESP32; Filename: C:\RBE\sloeber\sloeber-ide.ex
 // Utility functions for Inno Setup
 //   used to add/remove programs from the windows firewall rules
 // Code originally from http://news.jrsoftware.org/news/innosetup/msg43799.html
-
-const
-  NET_FW_SCOPE_ALL = 0;
-  NET_FW_IP_VERSION_ANY = 2;
-
 procedure SetFirewallException(AppName,FileName:string);
 var
   FirewallObject: Variant;
@@ -102,12 +97,12 @@ begin
     FirewallObject := CreateOleObject('HNetCfg.FwAuthorizedApplication');
     FirewallObject.ProcessImageFileName := FileName;
     FirewallObject.Name := AppName;
-    FirewallObject.Scope := NET_FW_SCOPE_ALL;
-    FirewallObject.IpVersion := NET_FW_IP_VERSION_ANY;
+    FirewallObject.Scope := 0;
+    FirewallObject.IpVersion := 2;
     FirewallObject.Enabled := True;
     FirewallManager := CreateOleObject('HNetCfg.FwMgr');
     FirewallProfile := FirewallManager.LocalPolicy.CurrentProfile;
-    FirewallProfile.AuthorizedApplications.Add(FirewallObject);
+    FirewallProfile.AuthorizedApplications.Add(FirewallObject);`
   except
   end;
 end;
