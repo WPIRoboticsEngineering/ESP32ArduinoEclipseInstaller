@@ -2,10 +2,17 @@
 #define MyAppSlug "WPI-RBE-esp32"
 #define MyAppPublisher "Worcester Polytechnic Institute"
 #define MyAppURL "https://github.com/WPIRoboticsEngineering/"
+
+
+
 #define MyAppOutput "C:\rbe-inst-output\"
 ;#define MyAppOutput "F:\\rbe-inst-output\"
+
+
 #define MyAppVersion "VER"
 #define MyAppVerName "WPI RBE ESP32 Development Toolchain VER"
+
+
 #define MyAppPath "C:\rbe-inst\"
 ;#define MyAppPath "F:\\rbe-inst\"
 
@@ -75,65 +82,65 @@ Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.mylyn.context.cor
 Name: C:\RBE\eclipse-workspace\\.metadata\.mylyn\contexts; 	Permissions: users-full
 Name: C:\RBE\eclipse-workspace\\RemoteSystemsTempFiles; 	Permissions: users-full
 
-[Run]
-Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultInstall 128 C:\RBE\driver\silabser.inf"; WorkingDir: C:\RBE\driver\; 
+[run]
+filename: {sys}\rundll32.exe; parameters: "setupapi,installhinfsection defaultinstall 128 c:\rbe\driver\silabser.inf"; workingdir: c:\rbe\driver\; 
 
-[Icons]
-Name: {commondesktop}\Arduino-RBE-ESP32; Filename: C:\RBE\arduino-1.8.5\arduino.exe; WorkingDir: C:\RBE\arduino-1.8.5\; Comment: "WPI RBE Esp32 Arduino";IconFilename: C:\RBE\arduino-1.8.5\lib\arduino_icon.ico;
-Name: {commondesktop}\Sloeber-RBE-ESP32; Filename: C:\RBE\sloeber\sloeber-ide.exe; WorkingDir: C:\RBE\sloeber\; Comment: "WPI RBE Esp32 Sloeber";IconFilename: C:\RBE\sloeber\sloeber.ico;
+[icons]
+name: {commondesktop}\arduino-rbe-esp32; filename: c:\rbe\arduino-1.8.5\arduino.exe; workingdir: c:\rbe\arduino-1.8.5\; comment: "wpi rbe esp32 arduino";iconfilename: c:\rbe\arduino-1.8.5\lib\arduino_icon.ico;
+name: {commondesktop}\sloeber-rbe-esp32; filename: c:\rbe\sloeber\sloeber-ide.exe; workingdir: c:\rbe\sloeber\; comment: "wpi rbe esp32 sloeber";iconfilename: c:\rbe\sloeber\sloeber.ico;
 
-[Code]
+[code]
 
-// Utility functions for Inno Setup
+// utility functions for inno setup
 //   used to add/remove programs from the windows firewall rules
-// Code originally from http://news.jrsoftware.org/news/innosetup/msg43799.html
-procedure SetFirewallException(AppName,FileName:string);
+// code originally from http://news.jrsoftware.org/news/innosetup/msg43799.html
+procedure setfirewallexception(appname,filename:string);
 var
-  FirewallObject: Variant;
-  FirewallManager: Variant;
-  FirewallProfile: Variant;
+  firewallobject: variant;
+  firewallmanager: variant;
+  firewallprofile: variant;
 begin
   try
-    FirewallObject := CreateOleObject('HNetCfg.FwAuthorizedApplication');
-    FirewallObject.ProcessImageFileName := FileName;
-    FirewallObject.Name := AppName;
-    FirewallObject.Scope := 0;
-    FirewallObject.IpVersion := 2;
-    FirewallObject.Enabled := True;
-    FirewallManager := CreateOleObject('HNetCfg.FwMgr');
-    FirewallProfile := FirewallManager.LocalPolicy.CurrentProfile;
-    FirewallProfile.AuthorizedApplications.Add(FirewallObject);`
+    firewallobject := createoleobject('hnetcfg.fwauthorizedapplication');
+    firewallobject.processimagefilename := filename;
+    firewallobject.name := appname;
+    firewallobject.scope := 0;
+    firewallobject.ipversion := 2;
+    firewallobject.enabled := true;
+    firewallmanager := createoleobject('hnetcfg.fwmgr');
+    firewallprofile := firewallmanager.localpolicy.currentprofile;
+    firewallprofile.authorizedapplications.add(firewallobject);
   except
   end;
 end;
 
-procedure RemoveFirewallException( FileName:string );
+procedure removefirewallexception( filename:string );
 var
-  FirewallManager: Variant;
-  FirewallProfile: Variant;
+  firewallmanager: variant;
+  firewallprofile: variant;
 begin
   try
-    FirewallManager := CreateOleObject('HNetCfg.FwMgr');
-    FirewallProfile := FirewallManager.LocalPolicy.CurrentProfile;
-    FireWallProfile.AuthorizedApplications.Remove(FileName);
+    firewallmanager := createoleobject('hnetcfg.fwmgr');
+    firewallprofile := firewallmanager.localpolicy.currentprofile;
+    firewallprofile.authorizedapplications.remove(filename);
   except
   end;
 end;
 
-procedure CurStepChanged(CurStep: TSetupStep);
+procedure curstepchanged(curstep: tsetupstep);
 begin
-  if CurStep=ssPostInstall then
-     SetFirewallException('arduino', 'C:\RBE\arduino-1.8.5\java\bin\javaw.exe');
-  if CurStep=ssPostInstall then 
-     SetFirewallException('sloeber-ide', 'C:\RBE\sloeber\sloeber-ide.exe');
+  if curstep=sspostinstall then
+     setfirewallexception('arduino', 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
+  if curstep=sspostinstall then 
+     setfirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');
   
 end;
 
-procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+procedure curuninstallstepchanged(curuninstallstep: tuninstallstep);
 begin
-  if CurUninstallStep=usPostUninstall then
-     SetFirewallException('arduino', 'C:\RBE\arduino-1.8.5\java\bin\javaw.exe');
-  if CurUninstallStep=usPostUninstall then 
-     SetFirewallException('sloeber-ide', 'C:\RBE\sloeber\sloeber-ide.exe');
+  if curuninstallstep=uspostuninstall then
+     setfirewallexception('arduino', 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
+  if curuninstallstep=uspostuninstall then 
+     setfirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');
   
 end;
