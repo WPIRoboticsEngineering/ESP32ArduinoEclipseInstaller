@@ -67,7 +67,6 @@ if (! test -z "$VERSION" ) then
 	if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\run.iss") then
 		echo wine ok
 	else
-		exit 0
 		testget isetup-5.4.3.exe
 		wine isetup-5.4.3.exe
 		exit 1
@@ -84,11 +83,6 @@ if (! test -z "$VERSION" ) then
 	
 	if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\runWPI.iss") then
 		echo wine ok
-	else
-		exit 0
-		testget isetup-5.4.3.exe
-		wine isetup-5.4.3.exe
-		exit 1
 	fi
 	
 	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
