@@ -5,6 +5,7 @@ VERSION=$1
 DIR=rbe-inst
 OUTDIR=rbe-inst-output
 INST=$OUTDIR/WPI-RBE-esp32-$VERSION.exe
+INSTLAB=$OUTDIR/WPI-RBE-esp32-LAB-$VERSION.exe
 INSTDIR=rbe-inst-iss
 unzipifiy(){
 	testget $1
@@ -71,6 +72,26 @@ if (! test -z "$VERSION" ) then
 		wine isetup-5.4.3.exe
 		exit 1
 	fi
+	
+	rm -rf $INSTDIR/runWPI.iss
+	cp rbe/TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/runWPI.iss
+	cp rbe/org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
+	cp rbe/config.ini 			$DIR/sloeber/configuration/
+	cp rbe/preferences.txt 		$DIR/arduino-1.8.5/lib/
+	sed -i s/VER/"$VERSION"/g $INSTDIR/runWPI.iss
+	
+	echo Running wine C:\$INSTDIR\run.iss
+	
+	if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\runWPI.iss") then
+		echo wine ok
+	else
+		exit 0
+		testget isetup-5.4.3.exe
+		wine isetup-5.4.3.exe
+		exit 1
+	fi
+	
 	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
+	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INSTLAB
 
 fi
