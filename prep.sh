@@ -34,7 +34,7 @@ testlink () {
 if (! test -z "$VERSION" ) then
 	rm -rf $OUTDIR/*
 	
-	testget GithubPublish.jar 
+
 	if (! test -e $DIR) then
 		echo "Making install dir $DIR"
 		mkdir  $DIR
@@ -84,7 +84,7 @@ if (! test -z "$VERSION" ) then
 	if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\runWPI.iss") then
 		echo wine ok
 	fi
-	
+	testget GithubPublish.jar 
 	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
 	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INSTLAB
 
