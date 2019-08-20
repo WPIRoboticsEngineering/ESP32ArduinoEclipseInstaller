@@ -111,7 +111,7 @@ end;
 procedure curuninstallstepchanged(curuninstallstep: tuninstallstep);
 begin
   if curuninstallstep=uspostuninstall then
-     removefirewallexception('arduino', 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
+     removefirewallexception( 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
   if curuninstallstep=uspostuninstall then 
-     removefirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');
+     removefirewallexception( 'c:\rbe\sloeber\sloeber-ide.exe');
 end;
