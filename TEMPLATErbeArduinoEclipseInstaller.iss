@@ -8,13 +8,15 @@
 #define MyAppOutput "C:\rbe-inst-output\"
 ;#define MyAppOutput "F:\\rbe-inst-output\"
 
+#define MyAppPath "C:\rbe-inst\"
+;#define MyAppPath "F:\\rbe-inst\"
+
 
 #define MyAppVersion "VER"
 #define MyAppVerName "WPI RBE ESP32 Development Toolchain VER"
 
 
-#define MyAppPath "C:\rbe-inst\"
-;#define MyAppPath "F:\\rbe-inst\"
+
 
 
 [Setup]
@@ -83,7 +85,7 @@ Name: C:\RBE\eclipse-workspace\\.metadata\.mylyn\contexts; 	Permissions: users-f
 Name: C:\RBE\eclipse-workspace\\RemoteSystemsTempFiles; 	Permissions: users-full
 
 [run]
-filename: {sys}\rundll32.exe; parameters: "setupapi,installhinfsection defaultinstall 128 c:\rbe\driver\silabser.inf"; workingdir: c:\rbe\driver\; 
+Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultInstall 128 C:\RBE\driver\silabser.inf"; WorkingDir: C:\RBE\driver\;
 
 [icons]
 name: {commondesktop}\arduino-rbe-esp32; filename: c:\rbe\arduino-1.8.5\arduino.exe; workingdir: c:\rbe\arduino-1.8.5\; comment: "wpi rbe esp32 arduino";iconfilename: c:\rbe\arduino-1.8.5\lib\arduino_icon.ico;
@@ -93,42 +95,70 @@ name: {commondesktop}\sloeber-rbe-esp32; filename: c:\rbe\sloeber\sloeber-ide.ex
 // utility functions for inno setup
 //   used to add/remove programs from the windows firewall rules
 // code originally from http://news.jrsoftware.org/news/innosetup/msg43799.html
-procedure setfirewallexception(appname,filename:string);
+procedure setfirewallexceptionLocal(appname,filename:string);
 var
-  firewallobject: variant;
-  firewallmanager: variant;
-  firewallprofile: variant;
-  objPolicy:       variant;
-  objProfile:      variant;
+  objApplication: variant;
+  objFirewall: variant;
+  objPolicyLocal: variant;
+	objProfile: variant;
+	colApplications: variant; 
+	objPolicy: variant;
 begin
   try
-    firewallobject := createoleobject('hnetcfg.fwauthorizedapplication');
-    firewallobject.processimagefilename := filename;
-    firewallobject.name := appname;
-    firewallobject.scope := 0;
-    firewallobject.ipversion := 2;
-    firewallobject.enabled := true;
-    firewallmanager := createoleobject('hnetcfg.fwmgr');
-    objPolicy := firewallmanager.LocalPolicy
-    objProfile := objPolicy.GetProfileByType(1)
-
-    firewallprofile := firewallmanager.localpolicy.currentprofile;
-    firewallprofile.authorizedapplications.add(firewallobject);
-    objProfile.AuthorizedApplications.Add(firewallobject);
-    
-  except
+    objApplication := createoleobject('hnetcfg.fwauthorizedapplication');
+    objApplication.processimagefilename := filename;
+    objApplication.name := appname;
+    objApplication.scope := 0;
+    objApplication.ipversion := 2;
+    objApplication.enabled := true;
+    objFirewall := createoleobject('hnetcfg.fwmgr');
+    //objFirewall.LocalPolicy.objPolicyLocal.GetProfileByType(1).AuthorizedApplications.Add(objApplication);
+    objPolicyLocal := objFirewall.localpolicy.currentprofile;
+    objPolicyLocal.authorizedapplications.add(objApplication);
+   except
   end;
 end;
 
-procedure removefirewallexception( filename:string );
+// utility functions for inno setup
+//   used to add/remove programs from the windows firewall rules
+// code originally from http://news.jrsoftware.org/news/innosetup/msg43799.html
+procedure setfirewallexception(appname,filename:string);
 var
-  firewallmanager: variant;
-  firewallprofile: variant;
+  objApplication: variant;
+  objFirewall: variant;
+  objPolicyLocal: variant;
+	objProfile: variant;
+	colApplications: variant; 
+	objPolicy: variant;
 begin
   try
-    firewallmanager := createoleobject('hnetcfg.fwmgr');
-    firewallprofile := firewallmanager.localpolicy.currentprofile;
-    firewallprofile.authorizedapplications.remove(filename);
+    objApplication := createoleobject('hnetcfg.fwauthorizedapplication');
+    objApplication.processimagefilename := filename;
+    objApplication.name := appname;
+    objApplication.scope := 0;
+    objApplication.ipversion := 2;
+    objApplication.enabled := true;
+    objFirewall := createoleobject('hnetcfg.fwmgr');
+		objPolicy := objFirewall.LocalPolicy ;
+    objProfile := objPolicy.GetProfileByType(1) ;
+		colApplications := objProfile.AuthorizedApplications ;
+		colApplications.Add(objApplication) ;
+    setfirewallexceptionLocal(appname,filename);
+   except
+  end;
+end;
+
+
+
+procedure removefirewallexception( filename:string );
+var
+  objFirewall: variant;
+  objPolicyLocal: variant;
+begin
+  try
+    objFirewall := createoleobject('hnetcfg.fwmgr');
+    objPolicyLocal := objFirewall.localpolicy.currentprofile;
+    objPolicyLocal.authorizedapplications.remove(filename);
   except
   end;
 end;

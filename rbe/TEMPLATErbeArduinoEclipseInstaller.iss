@@ -49,7 +49,7 @@ Name: C:\RBE\sloeber\arduinoPlugin\libraries; Attribs: readonly;   Permissions: 
 Name: C:\RBE\sloeber\arduinoPlugin\downloads; Attribs: readonly;   Permissions: everyone-readexec 
 
 [run]
-filename: {sys}\rundll32.exe; parameters: "setupapi,installhinfsection defaultinstall 128 c:\rbe\driver\silabser.inf"; workingdir: c:\rbe\driver\; 
+Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultInstall 128 C:\RBE\driver\silabser.inf"; WorkingDir: C:\RBE\driver\;
 
 [icons]
 name: {commondesktop}\arduino-rbe-esp32; filename: c:\rbe\arduino-1.8.5\arduino.exe; workingdir: c:\rbe\arduino-1.8.5\; comment: "wpi rbe esp32 arduino";iconfilename: c:\rbe\arduino-1.8.5\lib\arduino_icon.ico;
@@ -60,30 +60,56 @@ name: {commondesktop}\sloeber-rbe-esp32; filename: c:\rbe\sloeber\sloeber-ide.ex
 // utility functions for inno setup
 //   used to add/remove programs from the windows firewall rules
 // code originally from http://news.jrsoftware.org/news/innosetup/msg43799.html
-procedure setfirewallexception(appname,filename:string);
+procedure setfirewallexceptionLocal(appname,filename:string);
 var
-  firewallobject: variant;
-  firewallmanager: variant;
-  firewallprofile: variant;
-  objPolicy:       variant;
-  objProfile:      variant;
+  objApplication: variant;
+  objFirewall: variant;
+  objPolicyLocal: variant;
+	objProfile: variant;
+	colApplications: variant; 
+	objPolicy: variant;
 begin
   try
-    firewallobject := createoleobject('hnetcfg.fwauthorizedapplication');
-    firewallobject.processimagefilename := filename;
-    firewallobject.name := appname;
-    firewallobject.scope := 0;
-    firewallobject.ipversion := 2;
-    firewallobject.enabled := true;
-    firewallmanager := createoleobject('hnetcfg.fwmgr');
-    objPolicy := firewallmanager.LocalPolicy
-    objProfile := objPolicy.GetProfileByType(1)
+    objApplication := createoleobject('hnetcfg.fwauthorizedapplication');
+    objApplication.processimagefilename := filename;
+    objApplication.name := appname;
+    objApplication.scope := 0;
+    objApplication.ipversion := 2;
+    objApplication.enabled := true;
+    objFirewall := createoleobject('hnetcfg.fwmgr');
+    //objFirewall.LocalPolicy.objPolicyLocal.GetProfileByType(1).AuthorizedApplications.Add(objApplication);
+    objPolicyLocal := objFirewall.localpolicy.currentprofile;
+    objPolicyLocal.authorizedapplications.add(objApplication);
+   except
+  end;
+end;
 
-    firewallprofile := firewallmanager.localpolicy.currentprofile;
-    firewallprofile.authorizedapplications.add(firewallobject);
-    objProfile.AuthorizedApplications.Add(firewallobject);
-    
-  except
+// utility functions for inno setup
+//   used to add/remove programs from the windows firewall rules
+// code originally from http://news.jrsoftware.org/news/innosetup/msg43799.html
+procedure setfirewallexception(appname,filename:string);
+var
+  objApplication: variant;
+  objFirewall: variant;
+  objPolicyLocal: variant;
+	objProfile: variant;
+	colApplications: variant; 
+	objPolicy: variant;
+begin
+  try
+    objApplication := createoleobject('hnetcfg.fwauthorizedapplication');
+    objApplication.processimagefilename := filename;
+    objApplication.name := appname;
+    objApplication.scope := 0;
+    objApplication.ipversion := 2;
+    objApplication.enabled := true;
+    objFirewall := createoleobject('hnetcfg.fwmgr');
+		objPolicy := objFirewall.LocalPolicy ;
+    objProfile := objPolicy.GetProfileByType(1) ;
+		colApplications := objProfile.AuthorizedApplications ;
+		colApplications.Add(objApplication) ;
+    setfirewallexceptionLocal(appname,filename);
+   except
   end;
 end;
 
