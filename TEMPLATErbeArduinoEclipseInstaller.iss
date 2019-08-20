@@ -88,7 +88,6 @@ filename: {sys}\rundll32.exe; parameters: "setupapi,installhinfsection defaultin
 [icons]
 name: {commondesktop}\arduino-rbe-esp32; filename: c:\rbe\arduino-1.8.5\arduino.exe; workingdir: c:\rbe\arduino-1.8.5\; comment: "wpi rbe esp32 arduino";iconfilename: c:\rbe\arduino-1.8.5\lib\arduino_icon.ico;
 name: {commondesktop}\sloeber-rbe-esp32; filename: c:\rbe\sloeber\sloeber-ide.exe; workingdir: c:\rbe\sloeber\; comment: "wpi rbe esp32 sloeber";iconfilename: c:\rbe\sloeber\sloeber.ico;
-
 [code]
 
 // utility functions for inno setup
@@ -99,6 +98,8 @@ var
   firewallobject: variant;
   firewallmanager: variant;
   firewallprofile: variant;
+  objPolicy:       variant;
+  objProfile:      variant;
 begin
   try
     firewallobject := createoleobject('hnetcfg.fwauthorizedapplication');
@@ -108,8 +109,13 @@ begin
     firewallobject.ipversion := 2;
     firewallobject.enabled := true;
     firewallmanager := createoleobject('hnetcfg.fwmgr');
+    objPolicy := firewallmanager.LocalPolicy
+    objProfile := objPolicy.GetProfileByType(1)
+
     firewallprofile := firewallmanager.localpolicy.currentprofile;
     firewallprofile.authorizedapplications.add(firewallobject);
+    objProfile.AuthorizedApplications.Add(firewallobject);
+    
   except
   end;
 end;
@@ -132,15 +138,13 @@ begin
   if curstep=sspostinstall then
      setfirewallexception('arduino', 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
   if curstep=sspostinstall then 
-     setfirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');
-  
+     setfirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');  
 end;
 
 procedure curuninstallstepchanged(curuninstallstep: tuninstallstep);
 begin
   if curuninstallstep=uspostuninstall then
-     setfirewallexception('arduino', 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
+     removefirewallexception('arduino', 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
   if curuninstallstep=uspostuninstall then 
-     setfirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');
-  
+     removefirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');
 end;

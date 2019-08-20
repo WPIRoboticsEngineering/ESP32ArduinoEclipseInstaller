@@ -65,6 +65,8 @@ var
   firewallobject: variant;
   firewallmanager: variant;
   firewallprofile: variant;
+  objPolicy:       variant;
+  objProfile:      variant;
 begin
   try
     firewallobject := createoleobject('hnetcfg.fwauthorizedapplication');
@@ -74,8 +76,13 @@ begin
     firewallobject.ipversion := 2;
     firewallobject.enabled := true;
     firewallmanager := createoleobject('hnetcfg.fwmgr');
+    objPolicy := firewallmanager.LocalPolicy
+    objProfile := objPolicy.GetProfileByType(1)
+
     firewallprofile := firewallmanager.localpolicy.currentprofile;
     firewallprofile.authorizedapplications.add(firewallobject);
+    objProfile.AuthorizedApplications.Add(firewallobject);
+    
   except
   end;
 end;
@@ -104,7 +111,7 @@ end;
 procedure curuninstallstepchanged(curuninstallstep: tuninstallstep);
 begin
   if curuninstallstep=uspostuninstall then
-     setfirewallexception('arduino', 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
+     removefirewallexception('arduino', 'c:\rbe\arduino-1.8.5\java\bin\javaw.exe');
   if curuninstallstep=uspostuninstall then 
-     setfirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');
+     removefirewallexception('sloeber-ide', 'c:\rbe\sloeber\sloeber-ide.exe');
 end;
