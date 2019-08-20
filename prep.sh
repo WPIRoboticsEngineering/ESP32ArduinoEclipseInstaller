@@ -68,7 +68,7 @@ if (! test -z "$VERSION" ) then
 		exit 1
 	fi
 	
-	exit 0
+	#exit 0
 
 	rm -rf $INSTDIR/run.iss
 	cp TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/run.iss
