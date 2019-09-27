@@ -43,7 +43,13 @@ Name: english; MessagesFile: compiler:Default.isl
 
 
 [Files]
-Source: {#MyAppPath}\*;  DestDir: C:\RBE\; Flags: recursesubdirs createallsubdirs;
+Source: {#MyAppPath}\arduino-1.8.5\*;  DestDir: C:\RBE\arduino-1.8.5\; Flags: recursesubdirs createallsubdirs;
+Source: {#MyAppPath}\ArduinoAppData\*;  DestDir: C:\RBE\ArduinoAppData\; Flags: recursesubdirs createallsubdirs;
+Source: {#MyAppPath}\ArduinoSketchbook\*;  DestDir: C:\RBE\ArduinoSketchbook\; Flags: recursesubdirs createallsubdirs;
+Source: {#MyAppPath}\sloeber\*;  DestDir: C:\RBE\sloeber\; Flags: recursesubdirs createallsubdirs;
+Source: {#MyAppPath}\graphviz\*;  DestDir: C:\RBE\graphviz\; Flags: recursesubdirs createallsubdirs;
+Source: {#MyAppPath}\doxygen\*;  DestDir: C:\RBE\doxygen\; Flags: recursesubdirs createallsubdirs;
+
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.core.runtime\.settings\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.core.runtime\.settings; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.rse.core\profiles\PRF.desktop-tlp1o5p_32629\\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.rse.core\profiles\PRF.desktop-tlp1o5p_32629\; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.rse.core\initializerMarks\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.rse.core\initializerMarks; 	Flags: recursesubdirs createallsubdirs;
@@ -178,3 +184,27 @@ begin
   if curuninstallstep=uspostuninstall then 
      removefirewallexception( 'c:\rbe\sloeber\sloeber-ide.exe');
 end;
+
+function NeedsAddPath(Param: string): boolean;
+var
+  OrigPath: string;
+begin
+  if not RegQueryStringValue(HKEY_LOCAL_MACHINE,
+    'SYSTEM\CurrentControlSet\Control\Session Manager\Environment',
+    'Path', OrigPath)
+  then begin
+    Result := True;
+    exit;
+  end;
+  { look for the path with leading and trailing semicolon }
+  { Pos() returns 0 if not found }
+  Result := Pos(';' + Param + ';', ';' + OrigPath + ';') = 0;
+end;
+
+[Registry]
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
+    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};C:\RBE\graphviz\release\bin"; \
+    Check: NeedsAddPath('C:\RBE\graphviz\release\bin')
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\Session Manager\Environment"; \
+    ValueType: expandsz; ValueName: "Path"; ValueData: "{olddata};C:\RBE\doxygen"; \
+    Check: NeedsAddPath('C:\RBE\doxygen')

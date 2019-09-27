@@ -7,6 +7,7 @@ OUTDIR=rbe-inst-output
 INST=$OUTDIR/WPI-RBE-esp32-$VERSION.exe
 INSTLAB=$OUTDIR/WPI-RBE-esp32-LAB-$VERSION.exe
 INSTDIR=rbe-inst-iss
+
 unzipifiy(){
 	testget $1
 	echo "Unzipping $1 to $2"
@@ -42,6 +43,8 @@ if (! test -z "$VERSION" ) then
 		unzipifiy WorkingDirectories.zip $DIR
 		unzipifiy sloeber.zip $DIR
 		unzipifiy arduino-1.8.5.zip $DIR
+		unzipifiy doxygen.zip $DIR
+		unzipifiy graphviz.zip $DIR
 	fi
 	
 	testlink $DIR 		$START
@@ -71,6 +74,7 @@ if (! test -z "$VERSION" ) then
 	if (! test -e $INST) then
 		rm -rf $INSTDIR/run.iss
 		cp TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/run.iss
+		sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
 		cp org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
 		cp config.ini 			$DIR/sloeber/configuration/
 		cp io.sloeber.core.ui.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
@@ -78,7 +82,7 @@ if (! test -z "$VERSION" ) then
 		cp org.eclipse.egit.core.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 		cp preferences.txt 		$DIR/arduino-1.8.5/lib/
 		chmod -R 7777 $DIR/eclipse-workspace/
-		sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
+		
 		
 		echo Running wine C:\$INSTDIR\run.iss
 		
@@ -93,7 +97,7 @@ if (! test -z "$VERSION" ) then
 	fi
 
 	testget GithubPublish.jar 
-	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
-	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INSTLAB
+	#java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
+	#java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INSTLAB
 
 fi
