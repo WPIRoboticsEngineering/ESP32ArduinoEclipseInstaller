@@ -54,10 +54,39 @@ if (! test -z "$VERSION" ) then
 	
 	cp LICENSE.txt 			$DIR
 	cp sloeber.ico 			$DIR/sloeber/
+
+	if (! test -e $INST) then
+		rm -rf $INSTDIR/run.iss
+		cp TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/run.iss
+		sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
+		cp org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
+		grep -v "osgi.instance.area.default" rbe-inst/sloeber/configuration/config.ini > config.ini
+		echo "osgi.instance.area.default=C\:\\\\RBE\\\\eclipse-workspace" >>config.ini
+		cp config.ini 			$DIR/sloeber/configuration/
+		cp io.sloeber.core.ui.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		cp io.sloeber.arduino.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		cp org.eclipse.egit.core.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		cp preferences.txt 		$DIR/arduino-1.8.5/lib/
+		chmod -R 7777 $DIR/eclipse-workspace/
+		
+		exit 0
+		echo Running wine C:\$INSTDIR\run.iss
+		
+		if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\run.iss") then
+			echo wine ok
+		else
+			exit 1
+			testget isetup-5.4.3.exe
+			wine isetup-5.4.3.exe
+			exit 1
+		fi
+	fi
 	if (! test -e $INSTLAB) then
 		rm -rf $INSTDIR/runWPI.iss
 		cp rbe/TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/runWPI.iss
 		cp rbe/org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
+		grep -v "osgi.instance.area.default" rbe-inst/sloeber/configuration/config.ini > rbe/config.ini
+		echo "osgi.instance.area.default=R\:\\\\RBE\\\\eclipse-workspace" >>rbe/config.ini
 		cp rbe/config.ini 			$DIR/sloeber/configuration/
 		cp rbe/preferences.txt 		$DIR/arduino-1.8.5/lib/
 		sed -i s/VER/"$VERSION"/g $INSTDIR/runWPI.iss
@@ -70,34 +99,8 @@ if (! test -z "$VERSION" ) then
 			exit 1
 		fi
 	fi
-	#exit 0
-	if (! test -e $INST) then
-		rm -rf $INSTDIR/run.iss
-		cp TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/run.iss
-		sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
-		cp org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
-		cp config.ini 			$DIR/sloeber/configuration/
-		cp io.sloeber.core.ui.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-		cp io.sloeber.arduino.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-		cp org.eclipse.egit.core.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-		cp preferences.txt 		$DIR/arduino-1.8.5/lib/
-		chmod -R 7777 $DIR/eclipse-workspace/
-		
-		
-		echo Running wine C:\$INSTDIR\run.iss
-		
-		if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\run.iss") then
-			echo wine ok
-		else
-			exit 1
-			testget isetup-5.4.3.exe
-			wine isetup-5.4.3.exe
-			exit 1
-		fi
-	fi
-
 	testget GithubPublish.jar 
-	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
-	java -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INSTLAB
+	java -Xmx8g -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
+	java  -Xmx8g -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INSTLAB
 
 fi
