@@ -63,13 +63,14 @@ if (! test -z "$VERSION" ) then
 		grep -v "osgi.instance.area.default" rbe-inst/sloeber/configuration/config.ini > config.ini
 		echo "osgi.instance.area.default=C\:\\\\RBE\\\\eclipse-workspace" >>config.ini
 		cp config.ini 			$DIR/sloeber/configuration/
-		cp io.sloeber.core.ui.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-		cp io.sloeber.arduino.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-		cp org.eclipse.egit.core.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		
+		#cp io.sloeber.core.ui.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		#cp io.sloeber.arduino.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		#cp org.eclipse.egit.core.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 		cp preferences.txt 		$DIR/arduino-1.8.5/lib/
 		chmod -R 7777 $DIR/eclipse-workspace/
 		
-		exit 0
+
 		echo Running wine C:\$INSTDIR\run.iss
 		
 		if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\run.iss") then
