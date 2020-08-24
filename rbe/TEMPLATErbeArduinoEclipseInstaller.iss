@@ -36,6 +36,7 @@ Name: english; MessagesFile: compiler:Default.isl
 [Files]
 Source: {#MyAppPath}\arduino-1.8.5\*;  DestDir: C:\RBE\arduino-1.8.5\; Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\sloeber\*;  DestDir: C:\RBE\sloeber\; Flags: recursesubdirs createallsubdirs;
+Source: {#MyAppPath}\sloeber\configuration\.settings\*;  DestDir: C:\RBE\sloeber\configuration\.settings\; Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\graphviz\*;  DestDir: C:\RBE\graphviz\; Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\doxygen\*;  DestDir: C:\RBE\doxygen\; Flags: recursesubdirs createallsubdirs;
 
@@ -55,7 +56,7 @@ Filename: {sys}\rundll32.exe; Parameters: "setupapi,InstallHinfSection DefaultIn
 
 [icons]
 name: {commondesktop}\arduino-rbe-esp32; filename: c:\rbe\arduino-1.8.5\arduino.exe; workingdir: c:\rbe\arduino-1.8.5\; comment: "wpi rbe esp32 arduino";iconfilename: c:\rbe\arduino-1.8.5\lib\arduino_icon.ico;
-name: {commondesktop}\sloeber-rbe-esp32; filename: c:\rbe\sloeber\sloeber-ide.exe; workingdir: c:\rbe\sloeber\; comment: "wpi rbe esp32 sloeber";iconfilename: c:\rbe\sloeber\sloeber.ico;
+name: {commondesktop}\sloeber-rbe-esp32; filename: c:\rbe\sloeber\eclipse.exe; workingdir: c:\rbe\sloeber\; comment: "wpi rbe esp32 sloeber";iconfilename: c:\rbe\sloeber\sloeber.ico;
 
 [code]
 

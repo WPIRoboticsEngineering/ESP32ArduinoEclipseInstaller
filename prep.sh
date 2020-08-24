@@ -59,6 +59,9 @@ if (! test -z "$VERSION" ) then
 		rm -rf $INSTDIR/run.iss
 		cp TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/run.iss
 		sed -i s/VER/"$VERSION"/g $INSTDIR/run.iss
+		if (! test -e $DIR/sloeber/configuration/.settings/) then
+			mkdir -p $DIR/sloeber/configuration/.settings/
+		fi
 		cp org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
 		grep -v "osgi.instance.area.default" rbe-inst/sloeber/configuration/config.ini > config.ini
 		echo "osgi.instance.area.default=C\:\\\\RBE\\\\eclipse-workspace" >>config.ini
@@ -72,7 +75,7 @@ if (! test -z "$VERSION" ) then
 		
 
 		echo Running wine C:\$INSTDIR\run.iss
-		
+		return 0
 		if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\run.iss") then
 			echo wine ok
 		else

@@ -47,6 +47,7 @@ Source: {#MyAppPath}\arduino-1.8.5\*;  DestDir: C:\RBE\arduino-1.8.5\; Flags: re
 Source: {#MyAppPath}\ArduinoAppData\*;  DestDir: C:\RBE\ArduinoAppData\; Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\ArduinoSketchbook\*;  DestDir: C:\RBE\ArduinoSketchbook\; Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\sloeber\*;  DestDir: C:\RBE\sloeber\; Flags: recursesubdirs createallsubdirs;
+Source: {#MyAppPath}\sloeber\configuration\.settings\*;  DestDir: C:\RBE\sloeber\configuration\.settings\; Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\graphviz\*;  DestDir: C:\RBE\graphviz\; Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\doxygen\*;  DestDir: C:\RBE\doxygen\; Flags: recursesubdirs createallsubdirs;
 
