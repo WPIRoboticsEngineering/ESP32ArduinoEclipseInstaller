@@ -80,6 +80,12 @@ if (! test -z "$VERSION" ) then
 		sed 's/F\\\:\\\\rbe-inst/C\\\:\\\\RBE/g' ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/io.sloeber.arduino.prefs > io.sloeber.arduino.prefs
 		cp io.sloeber.arduino.prefs ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
 		
+		sed 's/R\\\:\\\\RBE\\\\ArduinoSketchbook/C\\\:\\\\RBE\\\\ArduinoSketchbook/g' ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/io.sloeber.core.ui.prefs > io.sloeber.core.ui.prefs
+		cp io.sloeber.core.ui.prefs ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		
+		sed 's/R\\\:\\\\RBE\\\\ArduinoSketchbook/C\\\:\\\\RBE\\\\ArduinoSketchbook/g' ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/io.sloeber.arduino.prefs > io.sloeber.arduino.prefs
+		cp io.sloeber.arduino.prefs ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		
 
 		cp preferences.txt 		$DIR/arduino-1.8.5/lib/
 		chmod -R 7777 $DIR/eclipse-workspace/
@@ -95,6 +101,8 @@ if (! test -z "$VERSION" ) then
 			exit 1
 		fi
 	fi
+	testget GithubPublish.jar 
+	java -Xmx8g -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
 	if (! test -e $INSTLAB) then
 		rm -rf $INSTDIR/runWPI.iss
 		cp rbe/TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/runWPI.iss
@@ -124,8 +132,7 @@ if (! test -z "$VERSION" ) then
 			exit 1
 		fi
 	fi
-	testget GithubPublish.jar 
-	java -Xmx8g -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INST
+
 	java  -Xmx8g -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION $INSTLAB
 
 fi
