@@ -1,14 +1,16 @@
 Automatically\ import\ libraries=true
-FsStatus=3
+FbStatus=1
+FsStatus=1
 JANTJE.TEMPLATE_USE_DEFAULT=defaultIno
 Last\ Used\ Upload\ port=
-Last\ used\ Board=esp32
-Last\ used\ Boards\ file=C\:\\RBE\\sloeber\\arduinoPlugin\\packages\\arduino\\hardware\\espressif\\esp32\\boards.txt
+Last\ used\ Board=uno
+Last\ used\ Boards\ file=C\:\\RBE\\sloeber\\arduinoPlugin\\packages\\arduino\\hardware\\avr\\1.8.3\\boards.txt
 Last\ used\ Examples=
-Private\ Library\ Path=C\:/RBE/ArduinoSketchbook/libraries
-Private\ hardware\ Path=C\:/RBE/arduino-1.8.5/hardware
+Private\ Library\ Path=C\:\\RBE\\ArduinoSketchbook\\libraries
+Private\ hardware\ Path=C\:\\RBE\\arduino-1.8.5\\hardware
 Use\ the\ algoritm\ to\ find\ the\ toolchain\ like\ Arduino\ IDE=true
 add\ pragma\ once\ to\ headers=true
 eclipse.preferences.version=1
 last\ Used\ upload\ Protocol=Default
-last\ used\ Board\ custom\ option\ selections=DebugLevel\=none\nFlashFreq\=80\nFlashMode\=qio\nFlashSize\=4M\nPartitionScheme\=default\nPSRAM\=disabled\nUploadSpeed\=921600
+last\ used\ Board\ custom\ option\ selections=
+use\ bonjour\ service\ to\ find\ devices=true

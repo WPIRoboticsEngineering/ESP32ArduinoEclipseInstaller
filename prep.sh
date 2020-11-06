@@ -62,14 +62,22 @@ if (! test -z "$VERSION" ) then
 		if (! test -e $DIR/sloeber/configuration/.settings/) then
 			mkdir -p $DIR/sloeber/configuration/.settings/
 		fi
-		cp org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
+		#cp org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
 		grep -v "osgi.instance.area.default" rbe-inst/sloeber/configuration/config.ini > config.ini
 		echo "osgi.instance.area.default=C\:\\\\RBE\\\\eclipse-workspace" >>config.ini
 		cp config.ini 			$DIR/sloeber/configuration/
 		
-		#cp io.sloeber.core.ui.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-		#cp io.sloeber.arduino.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
-		#cp org.eclipse.egit.core.prefs 	$DIR/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		grep -v "RECENT_WORKSPACES=" ./rbe-inst/sloeber/configuration/.settings/org.eclipse.ui.ide.prefs > org.eclipse.ui.ide.prefs
+		echo "RECENT_WORKSPACES=C\:\\\\RBE\\\\eclipse-workspace" >>org.eclipse.ui.ide.prefs
+		cp org.eclipse.ui.ide.prefs ./rbe-inst/sloeber/configuration/.settings/
+		
+		sed 's/F\\\:\\\\rbe-inst/C\\\:\\\\RBE/g' ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/io.sloeber.core.ui.prefs > io.sloeber.core.ui.prefs
+		cp io.sloeber.core.ui.prefs ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		
+		sed 's/F\\\:\\\\rbe-inst/C\\\:\\\\RBE/g' ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/io.sloeber.arduino.prefs > io.sloeber.arduino.prefs
+		cp io.sloeber.arduino.prefs ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		
+
 		cp preferences.txt 		$DIR/arduino-1.8.5/lib/
 		chmod -R 7777 $DIR/eclipse-workspace/
 		
@@ -88,10 +96,21 @@ if (! test -z "$VERSION" ) then
 	if (! test -e $INSTLAB) then
 		rm -rf $INSTDIR/runWPI.iss
 		cp rbe/TEMPLATErbeArduinoEclipseInstaller.iss $INSTDIR/runWPI.iss
-		cp rbe/org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
+		
+		sed 's/C\\\:\\\\RBE\\\\ArduinoSketchbook/R\\\:\\\\RBE\\\\ArduinoSketchbook/g' ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/io.sloeber.core.ui.prefs > io.sloeber.core.ui.prefs
+		cp io.sloeber.core.ui.prefs ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		
+		sed 's/C\\\:\\\\RBE\\\\ArduinoSketchbook/R\\\:\\\\RBE\\\\ArduinoSketchbook/g' ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/io.sloeber.arduino.prefs > io.sloeber.arduino.prefs
+		cp io.sloeber.arduino.prefs ./rbe-inst/eclipse-workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/
+		
 		grep -v "osgi.instance.area.default" rbe-inst/sloeber/configuration/config.ini > rbe/config.ini
 		echo "osgi.instance.area.default=R\:\\\\RBE\\\\eclipse-workspace" >>rbe/config.ini
 		cp rbe/config.ini 			$DIR/sloeber/configuration/
+		
+		grep -v "RECENT_WORKSPACES=" ./rbe-inst/sloeber/configuration/.settings/org.eclipse.ui.ide.prefs > org.eclipse.ui.ide.prefs
+		echo "RECENT_WORKSPACES=R\:\\\\RBE\\\\eclipse-workspace" >>org.eclipse.ui.ide.prefs
+		cp org.eclipse.ui.ide.prefs ./rbe-inst/sloeber/configuration/.settings/
+		
 		cp rbe/preferences.txt 		$DIR/arduino-1.8.5/lib/
 		sed -i s/VER/"$VERSION"/g $INSTDIR/runWPI.iss
 		
