@@ -61,9 +61,9 @@ Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.cdt.make.c
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.core.resources\.root\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.core.resources\.root; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.core.resources\.root\.indexes\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.core.resources\.root\.indexes; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.core.resources\.safetable\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.core.resources\.safetable; 	Flags: recursesubdirs createallsubdirs;
-Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.mylyn.context.core\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.mylyn.context.core; 	Flags: recursesubdirs createallsubdirs;
+//Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.mylyn.context.core\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.mylyn.context.core; 	Flags: recursesubdirs createallsubdirs;
 //Source: {#MyAppPath}\eclipse-workspace\.metadata\.plugins\org.eclipse.ui.ide\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.ui.ide; 	Flags: recursesubdirs createallsubdirs;
-Source: {#MyAppPath}\eclipse-workspace\.metadata\.mylyn\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.mylyn; 	Flags: recursesubdirs createallsubdirs;
+//Source: {#MyAppPath}\eclipse-workspace\.metadata\.mylyn\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\.mylyn; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\eclipse-workspace\.metadata\\*; 	DestDir: C:\RBE\eclipse-workspace\\.metadata\; 	Flags: recursesubdirs createallsubdirs;
 Source: {#MyAppPath}\driver\*; DestDir: C:\RBE\driver; Excludes: .*  
 Source: {#MyAppPath}\driver\x86\*; DestDir: C:\RBE\driver\x86; Excludes: .* 
@@ -79,7 +79,7 @@ Name: C:\RBE\eclipse-workspace; Permissions: users-full
 Name: C:\RBE\ArduinoAppData; Permissions: users-full
 Name: C:\RBE\ArduinoSketchbook; Permissions: users-full
 Name: C:\RBE\gitRbe; Permissions: users-full
-Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.mylyn.tasks.ui; 	 Permissions: users-full
+//Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.mylyn.tasks.ui; 	 Permissions: users-full
 Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.ui.intro; 	 Permissions: users-full
 Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.core.resources\.history; 	 Permissions: users-full
 Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.core.resources\.projects\RemoteSystemsTempFiles; 	 Permissions: users-full
@@ -87,7 +87,7 @@ Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.mylyn.bugzilla.co
 Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.cdt.core; 	Permissions: users-full
 Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.rse.ui; 	Permissions: users-full
 Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.debug.core; 	Permissions: users-full
-Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.mylyn.context.core\contexts;  	Permissions: users-full
+//Name: C:\RBE\eclipse-workspace\\.metadata\.plugins\org.eclipse.mylyn.context.core\contexts;  	Permissions: users-full
 Name: C:\RBE\eclipse-workspace\\.metadata\.mylyn\contexts; 	Permissions: users-full
 Name: C:\RBE\eclipse-workspace\\RemoteSystemsTempFiles; 	Permissions: users-full
 
