@@ -62,6 +62,9 @@ if (! test -z "$VERSION" ) then
 		if (! test -e $DIR/sloeber/configuration/.settings/) then
 			mkdir -p $DIR/sloeber/configuration/.settings/
 		fi
+		#Remove files with non-ascii names, cause installer to fail
+		LC_ALL=C find rbe-inst/ -name '*[! -~]*' | xargs -n1 rm
+		
 		#cp org.eclipse.ui.ide.prefs 	$DIR/sloeber/configuration/.settings/
 		grep -v "osgi.instance.area.default" rbe-inst/sloeber/configuration/config.ini > config.ini
 		echo "osgi.instance.area.default=C\:\\\\RBE\\\\eclipse-workspace" >>config.ini
@@ -83,11 +86,10 @@ if (! test -z "$VERSION" ) then
 		
 
 		echo Running wine C:\$INSTDIR\run.iss
-		return 0
+
 		if ( wine "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" /cc "c:\rbe-inst-iss\run.iss") then
 			echo wine ok
 		else
-			exit 1
 			testget isetup-5.4.3.exe
 			wine isetup-5.4.3.exe
 			exit 1
