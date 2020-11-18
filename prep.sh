@@ -54,6 +54,8 @@ if (! test -z "$VERSION" ) then
 	
 	cp LICENSE.txt 			$DIR
 	cp sloeber.ico 			$DIR/sloeber/
+	
+	java  -Xmx8g -jar GithubPublish.jar ESP32ArduinoEclipseInstaller  WPIRoboticsEngineering $VERSION linux-eclipse-esp32.sh
 
 	if (! test -e $INST) then
 		rm -rf $INSTDIR/run.iss
