@@ -128,6 +128,14 @@ for val in $CURRENT_LIBS; do
 	if [ "$val" = "ESP32ServoServer" ]; then
 		IS_DEFAULT=true
 		mv ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/ESP32ServoServer ~/Arduino/
+		rm -rf  ~/Arduino/ESP32ServoServer/core/
+		rm -rf  ~/Arduino/ESP32ServoServer/libraries
+		rm -rf  ~/Arduino/ESP32ServoServer/spec.d
+		rm -rf  ~/Arduino/ESP32ServoServer/sloeber.ino.cpp
+		rm -rf  ~/Arduino/ESP32ServoServer/.git
+		rm -rf  ~/Arduino/ESP32ServoServer/.settings
+		rm -rf  ~/Arduino/ESP32ServoServer/.project
+		rm -rf  ~/Arduino/ESP32ServoServer/.cproject
 	fi 
 	for valDef in $DEFAULT_SLOBER_LIBS; do
 		if [ "$val" = "$valDef" ]; then
