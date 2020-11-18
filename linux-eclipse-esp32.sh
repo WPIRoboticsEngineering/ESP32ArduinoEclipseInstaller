@@ -119,7 +119,7 @@ fi
 
 
 #Run SLoeber
-#$SLOBER_LOC/eclipse/eclipse
+$SLOBER_LOC/eclipse/eclipse
 
 CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
 
