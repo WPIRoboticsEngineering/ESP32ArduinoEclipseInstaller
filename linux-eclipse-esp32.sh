@@ -51,6 +51,10 @@ DFRobotIRPosition            lx16a-servo
 DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library"
 
 function sync {
+	if [ "$(ls -A ~/.arduino15/packages/)" ]; then
+	    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
+		rm -rf ~/.arduino15/packages/*
+	fi
 	CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
 	
 	for val in $CURRENT_LIBS; do
@@ -108,8 +112,7 @@ function sync {
 						rsync -qatP $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/* ~/Arduino/tools/
 					fi
 					echo moving $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core/$VER to $LIBCHECK
-					
-					#exit
+					rm -rf ~/.arduino15/
 				fi
 			done
 		done
@@ -206,10 +209,7 @@ if (! test -e ~/bin/SloeberESP32.desktop) then
 	gio set ~/Desktop/SloeberESP32.desktop "metadata::trusted" yes
 fi
 
-if [ "$(ls -A ~/.arduino15/packages/)" ]; then
-    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
-	rm -rf ~/.arduino15/packages/*
-fi
+
 
 sync
 #Run SLoeber
