@@ -6,9 +6,19 @@ ARDUINO_ZIP_NAME=arduino-1.8.13-linux64.tar.xz
 ECLIPSE_LOC=~/bin/eclipse-slober-rbe/
 SLOBER_LOC=~/bin/eclipse-slober-rbe/
 
+SCRIPT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+
 if (! test -e ~/bin) then
  mkdir ~/bin
 fi
+
+if (! test -e ~/bin/linux-eclipse-esp32.sh) then
+ echo "Script source copied to bin " $SCRIPT
+ cp $SCRIPT/linux-eclipse-esp32.sh ~/bin/linux-eclipse-esp32.sh
+ chmod +x  ~/bin/linux-eclipse-esp32.sh
+fi
+
 if (! test -e ~/Arduino/hardware) then
  mkdir -p ~/Arduino/hardware
 fi
@@ -26,34 +36,108 @@ if (! test -e $ARDUINO_LOC) then
 	
 fi
 
-DEFAULT_SLOBER_LIBS="CapacitiveSensor  Ethernet  Firmata  GSM  Keyboard  LiquidCrystal  Mouse  Servo  Stepper  TFT  WiFi"
+DEFAULT_SLOBER_LIBS="CapacitiveSensor  Ethernet  Firmata  GSM  Keyboard  LiquidCrystal  Mouse  Servo  Stepper  TFT  WiFi SD"
 
 
 StringVal="Adafruit_BNO055              ESP32AnalogRead        
 Adafruit_Circuit_Playground  ESP32Encoder           RfidDb
-Adafruit_TinyUSB_Library     ESP32Servo             SD
+Adafruit_TinyUSB_Library     ESP32Servo             
 Adafruit_TLC5947             Esp32SimplePacketComs  SimplePacketComs
-Adafruit_Sensor      Esp32WifiManager       SpacebrewYun
+Adafruit_Unified_Sensor      Esp32WifiManager       
 ArduinoJson                  EspWii                 TeensySimplePacketComs
 BNO055SimplePacketComs       FlashStorage           WiiChuck
 BowlerCom                    HerkulexServo          Yet_Another_Arduino_Wiegand_Library
 DFRobotIRPosition            lx16a-servo
 DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library"
 
+function sync {
+	CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
+	
+	for val in $CURRENT_LIBS; do
+		IS_DEFAULT=false
+		if [ "$val" = "ESP32ServoServer" ]; then
+			IS_DEFAULT=true
+			mv ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/ESP32ServoServer ~/Arduino/
+			rm -rf  ~/Arduino/ESP32ServoServer/core/
+			rm -rf  ~/Arduino/ESP32ServoServer/libraries
+			rm -rf  ~/Arduino/ESP32ServoServer/spec.d
+			rm -rf  ~/Arduino/ESP32ServoServer/sloeber.ino.cpp
+			rm -rf  ~/Arduino/ESP32ServoServer/.git
+			rm -rf  ~/Arduino/ESP32ServoServer/.settings
+			rm -rf  ~/Arduino/ESP32ServoServer/.project
+			rm -rf  ~/Arduino/ESP32ServoServer/.cproject
+			rm -rf ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/ESP32ServoServer
+		fi 
+		for valDef in $DEFAULT_SLOBER_LIBS; do
+			if [ "$val" = "$valDef" ]; then
+				IS_DEFAULT=true
+			fi
+		done
+		if [ "$IS_DEFAULT" = true ] ; then
+			echo "Default lib found" $val
+		else
+			echo "EXTRA lib found, moving" ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val " to " ~/Arduino/libraries/
+			mkdir -p ~/Arduino/libraries/$val
+			VER=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val)
+			for version in $VER; do
+				mv ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val/$version/* ~/Arduino/libraries/$val
+			done		
+			rm -rf ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val/
+		fi
+	done
+	
+	TOOLCHAINS_SLOBER=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages)
+	
+	for val in $TOOLCHAINS_SLOBER; do
+		echo $val Toolchain found
+		LIBCHECK=~/Arduino/hardware/$val
+		
+		CORES=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware)
+		
+		for core in $CORES; do
+			echo $core Core Type
+			mkdir -p ~/Arduino/hardware/$core/
+			VERSIONS=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core)
+			for VER in $VERSIONS; do
+			    echo $VER Version Number
+				LIBCHECK=~/Arduino/hardware/$core/$VER
+				if (! test -e $LIBCHECK) then
+					
+					rsync -qatP $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core/$VER ~/Arduino/hardware/$core/
+					if ( test -e $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/) then
+						rsync -qatP $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/* ~/Arduino/tools/
+					fi
+					echo moving $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core/$VER to $LIBCHECK
+					
+					#exit
+				fi
+			done
+		done
+		rm -rf $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/
+	    
+	done
 
-if (! test -e ~/Arduino/libraries/Adafruit_Sensor) then
-	git clone https://github.com/adafruit/Adafruit_Sensor.git ~/Arduino/libraries/Adafruit_Sensor/
-fi
+}
+
+
+#if (! test -e ~/Arduino/libraries/Adafruit_Sensor) then
+#	git clone https://github.com/adafruit/Adafruit_Sensor.git ~/Arduino/libraries/Adafruit_Sensor/
+#fi
 
 # Iterate the string variable using for loop
 for val in $StringVal; do
 	LIBCHECK=~/Arduino/libraries/$val
 	if (! test -e $LIBCHECK) then
-		if ($ARDUINO_LOC/arduino --install-library $val	)  then
-		 echo "Installed "$val	
+		#convert the underscores to spaced for installing
+		LIB=\'$(sed "s/_/ /g" <<< $val)\' 
+		echo Installing $LIB
+		CMD="$ARDUINO_LOC/arduino --install-library $LIB"
+		echo $CMD
+		if ( eval "$CMD") then
+		 echo "Success install "  $LIB
 		else
-			echo "\n\nFAILED  " $val "\n\n"	
-		fi
+		 echo "FAULT " $LIB
+		fi	
 	fi
     
 done
@@ -111,7 +195,7 @@ if (! test -e ~/bin/SloeberESP32.desktop) then
 	Type=Application
 	Name=RBE Eclipse Sloeber
 	Comment=
-	Exec=$HOME/bin/eclipse-slober-rbe/eclipse/eclipse
+	Exec=$HOME/bin/linux-eclipse-esp32.sh
 	Icon=$HOME/bin/eclipse-slober-rbe/eclipse/icon.xpm
 	Path=
 	Terminal=false
@@ -127,66 +211,9 @@ if [ "$(ls -A ~/.arduino15/packages/)" ]; then
 	rm -rf ~/.arduino15/packages/*
 fi
 
-
+sync
 #Run SLoeber
-#$SLOBER_LOC/eclipse/eclipse
+$SLOBER_LOC/eclipse/eclipse
 
-CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
-
-for val in $CURRENT_LIBS; do
-	IS_DEFAULT=false
-	if [ "$val" = "ESP32ServoServer" ]; then
-		IS_DEFAULT=true
-		mv ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/ESP32ServoServer ~/Arduino/
-		rm -rf  ~/Arduino/ESP32ServoServer/core/
-		rm -rf  ~/Arduino/ESP32ServoServer/libraries
-		rm -rf  ~/Arduino/ESP32ServoServer/spec.d
-		rm -rf  ~/Arduino/ESP32ServoServer/sloeber.ino.cpp
-		rm -rf  ~/Arduino/ESP32ServoServer/.git
-		rm -rf  ~/Arduino/ESP32ServoServer/.settings
-		rm -rf  ~/Arduino/ESP32ServoServer/.project
-		rm -rf  ~/Arduino/ESP32ServoServer/.cproject
-	fi 
-	for valDef in $DEFAULT_SLOBER_LIBS; do
-		if [ "$val" = "$valDef" ]; then
-			IS_DEFAULT=true
-		fi
-	done
-	if [ "$IS_DEFAULT" = true ] ; then
-		echo "Default lib found" $val
-	else
-		echo "EXTRA lib found, moving" ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val " to " ~/Arduino/libraries/
-		mkdir -p ~/Arduino/libraries/$val
-		VER=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val)
-		for version in $VER; do
-			mv ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val/$version/* ~/Arduino/libraries/$val
-		done		
-		rm -rf ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val/
-	fi
-done
-
-TOOLCHAINS_SLOBER=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages)
-
-for val in $TOOLCHAINS_SLOBER; do
-	echo $val Toolchain found
-	LIBCHECK=~/Arduino/hardware/$val
-	
-	CORES=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware)
-	
-	for core in $CORES; do
-		LIBCHECK=~/Arduino/hardware/$core/$val
-		if (! test -e $LIBCHECK) then
-			if (! test -e ~/Arduino/hardware/$core/) then
-				mkdir -p ~/Arduino/hardware/$core/
-			fi
-			ln -s $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core/* ~/Arduino/hardware/$core/
-			if ( test -e $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/) then
-				ln -s $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/* ~/Arduino/tools/
-			fi
-			touch ~/Arduino/hardware/$core/$val
-		fi
-	done
-	
-    
-done
+sync
 
