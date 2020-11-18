@@ -9,6 +9,12 @@ SLOBER_LOC=~/bin/eclipse-slober-rbe/
 if (! test -e ~/bin) then
  mkdir ~/bin
 fi
+if (! test -e ~/Arduino/hardware) then
+ mkdir -p ~/Arduino/hardware
+fi
+if (! test -e ~/Arduino/tools) then
+ mkdir -p ~/Arduino/tools
+fi
 
 if (! test -e $ARDUINO_LOC) then
 
@@ -104,6 +110,32 @@ if (! test -e ~/bin/SloeberESP32.desktop) then
 	gio set ~/Desktop/SloeberESP32.desktop "metadata::trusted" yes
 fi
 
+
+
 $SLOBER_LOC/eclipse/eclipse
 
+TOOLCHAINS_SLOBER=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages)
+
+for val in $TOOLCHAINS_SLOBER; do
+	echo $val Toolchain found
+	LIBCHECK=~/Arduino/hardware/$val
+	
+	CORES=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware)
+	
+	for core in $CORES; do
+		LIBCHECK=~/Arduino/hardware/$core/$val
+		if (! test -e $LIBCHECK) then
+			if (! test -e ~/Arduino/hardware/$core/) then
+				mkdir -p ~/Arduino/hardware/$core/
+			fi
+			ln -s $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core/* ~/Arduino/hardware/$core/
+			if ( test -e $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/) then
+				ln -s $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/* ~/Arduino/tools/
+			fi
+			touch ~/Arduino/hardware/$core/$val
+		fi
+	done
+	
+    
+done
 
