@@ -26,29 +26,39 @@ if (! test -e $ARDUINO_LOC) then
 	
 fi
 
+DEFAULT_SLOBER_LIBS="CapacitiveSensor  Ethernet  Firmata  GSM  Keyboard  LiquidCrystal  Mouse  Servo  Stepper  TFT  WiFi"
+
+
 StringVal="Adafruit_BNO055              ESP32AnalogRead        
 Adafruit_Circuit_Playground  ESP32Encoder           RfidDb
 Adafruit_TinyUSB_Library     ESP32Servo             SD
 Adafruit_TLC5947             Esp32SimplePacketComs  SimplePacketComs
-Adafruit_Unified_Sensor      Esp32WifiManager       SpacebrewYun
+Adafruit_Sensor      Esp32WifiManager       SpacebrewYun
 ArduinoJson                  EspWii                 TeensySimplePacketComs
 BNO055SimplePacketComs       FlashStorage           WiiChuck
 BowlerCom                    HerkulexServo          Yet_Another_Arduino_Wiegand_Library
 DFRobotIRPosition            lx16a-servo
 DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library"
 
-DEFAULT_SLOBER_LIBS="CapacitiveSensor  Ethernet  Firmata  GSM  Keyboard  LiquidCrystal  Mouse  Servo  Stepper  TFT  WiFi"
+
+if (! test -e ~/Arduino/libraries/Adafruit_Sensor) then
+	git clone https://github.com/adafruit/Adafruit_Sensor.git ~/Arduino/libraries/Adafruit_Sensor/
+fi
 
 # Iterate the string variable using for loop
 for val in $StringVal; do
 	LIBCHECK=~/Arduino/libraries/$val
 	if (! test -e $LIBCHECK) then
-		$ARDUINO_LOC/arduino --install-library $val	
-#	else
-#		echo $LIBCHECK Exists
+		if ($ARDUINO_LOC/arduino --install-library $val	)  then
+		 echo "Installed "$val	
+		else
+			echo "\n\nFAILED  " $val "\n\n"	
+		fi
 	fi
     
 done
+
+
 
 if (! test -e ~/bin/ArduinoESP32.desktop) then
 	echo "[Desktop Entry]
@@ -119,7 +129,7 @@ fi
 
 
 #Run SLoeber
-$SLOBER_LOC/eclipse/eclipse
+#$SLOBER_LOC/eclipse/eclipse
 
 CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
 
