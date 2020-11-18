@@ -35,7 +35,9 @@ ArduinoJson                  EspWii                 TeensySimplePacketComs
 BNO055SimplePacketComs       FlashStorage           WiiChuck
 BowlerCom                    HerkulexServo          Yet_Another_Arduino_Wiegand_Library
 DFRobotIRPosition            lx16a-servo
-DFW                          RBE1001Lib "
+DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library"
+
+DEFAULT_SLOBER_LIBS="CapacitiveSensor  Ethernet  Firmata  GSM  Keyboard  LiquidCrystal  Mouse  Servo  Stepper  TFT  WiFi"
 
 # Iterate the string variable using for loop
 for val in $StringVal; do
@@ -110,9 +112,36 @@ if (! test -e ~/bin/SloeberESP32.desktop) then
 	gio set ~/Desktop/SloeberESP32.desktop "metadata::trusted" yes
 fi
 
+if [ "$(ls -A ~/.arduino15/packages/)" ]; then
+    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
+	rm -rf ~/.arduino15/packages/*
+fi
 
 
-$SLOBER_LOC/eclipse/eclipse
+#Run SLoeber
+#$SLOBER_LOC/eclipse/eclipse
+
+CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
+
+for val in $CURRENT_LIBS; do
+	IS_DEFAULT=false
+	for valDef in $DEFAULT_SLOBER_LIBS; do
+		if [ "$val" = "$valDef" ]; then
+			IS_DEFAULT=true
+		fi
+	done
+	if [ "$IS_DEFAULT" = true ] ; then
+		echo "Default lib found" $val
+	else
+		echo "EXTRA lib found, moving" ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val " to " ~/Arduino/libraries/
+		mkdir -p ~/Arduino/libraries/$val
+		VER=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val)
+		for version in $VER; do
+			mv ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val/$version/* ~/Arduino/libraries/$val
+		done		
+		rm -rf ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries/$val/
+	fi
+done
 
 TOOLCHAINS_SLOBER=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages)
 
