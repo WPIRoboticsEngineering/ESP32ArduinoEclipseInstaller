@@ -53,7 +53,7 @@ DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library"
 function sync {
 	if [ "$(ls -A ~/.arduino15/packages/)" ]; then
 	    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
-		rm -rf ~/.arduino15/packages/*
+		rm -rf ~/.arduino15/
 	fi
 	CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
 	
