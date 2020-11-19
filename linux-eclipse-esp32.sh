@@ -13,8 +13,8 @@ if (! test -e ~/bin) then
  mkdir ~/bin
 fi
 
-if (! test -e ~/bin/linux-eclipse-esp32.sh) then
- echo "Script source copied to bin " $SCRIPT
+if ! [ "$SCRIPT" = "$HOME/bin" ]; then
+ echo "Script source copied to ~/bin from " $SCRIPT
  cp $SCRIPT/linux-eclipse-esp32.sh ~/bin/linux-eclipse-esp32.sh
  chmod +x  ~/bin/linux-eclipse-esp32.sh
 fi
@@ -48,12 +48,16 @@ ArduinoJson                  EspWii                 TeensySimplePacketComs
 BNO055SimplePacketComs       FlashStorage           WiiChuck
 BowlerCom                    HerkulexServo          Yet_Another_Arduino_Wiegand_Library
 DFRobotIRPosition            lx16a-servo
-DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library"
+DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library ESP32_BLE_Arduino"
 
 function sync {
-	if [ "$(ls -A ~/.arduino15/packages/)" ]; then
-	    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
-		rm -rf ~/.arduino15/
+	if ( test -e ~/.arduino15/) then
+		if ( test -e ~/.arduino15/packages/) then
+			if [ "$(ls -A ~/.arduino15/packages/)" ]; then
+			    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
+				rm -rf ~/.arduino15/
+			fi
+		fi
 	fi
 	CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
 	
