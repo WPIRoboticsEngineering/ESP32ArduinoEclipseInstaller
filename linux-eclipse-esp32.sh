@@ -33,7 +33,12 @@ if (! test -e $ARDUINO_LOC) then
 	fi
 	
 	tar -xvf ~/bin/$ARDUINO_ZIP_NAME -C ~/bin/
-	
+	sudo usermod -a -G dialout $USER 
+	sudo apt-get install git 
+	wget https://bootstrap.pypa.io/get-pip.py 
+	echo "Getting Pip, might take a while..."
+	sudo python get-pip.py
+	sudo pip install pyserial 
 fi
 
 DEFAULT_SLOBER_LIBS="CapacitiveSensor  Ethernet  Firmata  GSM  Keyboard  LiquidCrystal  Mouse  Servo  Stepper  TFT  WiFi SD"
@@ -48,7 +53,7 @@ ArduinoJson                  EspWii                 TeensySimplePacketComs
 BNO055SimplePacketComs       FlashStorage           WiiChuck
 BowlerCom                    HerkulexServo          Yet_Another_Arduino_Wiegand_Library
 DFRobotIRPosition            lx16a-servo
-DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library ESP32_BLE_Arduino"
+DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library ESP32_BLE_Arduino "
 
 function sync {
 	if ( test -e ~/.arduino15/) then
@@ -123,6 +128,23 @@ function sync {
 		rm -rf $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/
 	    
 	done
+	
+	if (! test -e ~/Arduino/hardware/espressif/4point2/) then
+
+		echo "Starting clone ..."
+		mkdir -p ~/Arduino/hardware/espressif 
+		cd ~/Arduino/hardware/espressif 
+		git clone https://github.com/WPIRoboticsEngineering/arduino-esp32.git 4point2 
+		cd 4point2
+		git checkout idf-release/v4.2
+		git submodule update --init --recursive 
+		cd tools 
+		python3 get.py
+	fi
+	cd ~/Arduino/hardware/espressif/4point2
+	git pull origin idf-release/v4.2
+	git pull https://github.com/espressif/arduino-esp32.git idf-release/v4.2
+	
 
 }
 
