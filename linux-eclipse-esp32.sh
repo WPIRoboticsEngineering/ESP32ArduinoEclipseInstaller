@@ -141,9 +141,9 @@ function sync {
 		cd tools 
 		python3 get.py
 	fi
-	cd ~/Arduino/hardware/espressif/4point2
-	git pull origin idf-release/v4.2
-	git pull https://github.com/espressif/arduino-esp32.git idf-release/v4.2
+	
+	#git pull origin idf-release/v4.2
+	#git pull https://github.com/espressif/arduino-esp32.git idf-release/v4.2
 	
 
 }
@@ -239,7 +239,7 @@ fi
 
 sync
 #Run SLoeber
-$SLOBER_LOC/eclipse/eclipse
+$SLOBER_LOC/eclipse/eclipse -verbose
 
 sync
 
