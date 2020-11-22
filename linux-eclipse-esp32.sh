@@ -34,7 +34,7 @@ if (! test -e $ARDUINO_LOC) then
 	
 	tar -xvf ~/bin/$ARDUINO_ZIP_NAME -C ~/bin/
 	sudo usermod -a -G dialout $USER 
-	sudo apt-get install git 
+	sudo apt-get install git python3-serial python3
 	wget https://bootstrap.pypa.io/get-pip.py 
 	echo "Getting Pip, might take a while..."
 	sudo python get-pip.py
