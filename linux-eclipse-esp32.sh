@@ -56,14 +56,7 @@ DFRobotIRPosition            lx16a-servo
 DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library ESP32_BLE_Arduino "
 
 function sync {
-	if ( test -e ~/.arduino15/) then
-		if ( test -e ~/.arduino15/packages/) then
-			if [ "$(ls -A ~/.arduino15/packages/)" ]; then
-			    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
-				rm -rf ~/.arduino15/
-			fi
-		fi
-	fi
+
 	CURRENT_LIBS=$(ls ~/bin/eclipse-slober-rbe/eclipse/arduinoPlugin/libraries)
 	
 	for val in $CURRENT_LIBS; do
@@ -99,35 +92,17 @@ function sync {
 		fi
 	done
 	
-	TOOLCHAINS_SLOBER=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages)
+	## toolchain sync
+	if ( test -e ~/.arduino15/) then
+		if ( test -e ~/.arduino15/packages/) then
+			if [ "$(ls -A ~/.arduino15/packages/)" ]; then
+			    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
+				#rm -rf ~/.arduino15/
+			fi
+		fi
+	fi
+	rsync -avtP  $SLOBER_LOC/eclipse/arduinoPlugin/packages/* ~/.arduino15/packages/
 	
-	for val in $TOOLCHAINS_SLOBER; do
-		echo $val Toolchain found
-		LIBCHECK=~/Arduino/hardware/$val
-		
-		CORES=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware)
-		
-		for core in $CORES; do
-			echo $core Core Type
-			mkdir -p ~/Arduino/hardware/$core/
-			VERSIONS=$(ls $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core)
-			for VER in $VERSIONS; do
-			    echo $VER Version Number
-				LIBCHECK=~/Arduino/hardware/$core/$VER
-				if (! test -e $LIBCHECK) then
-					
-					rsync -qatP $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core/$VER ~/Arduino/hardware/$core/
-					if ( test -e $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/) then
-						rsync -qatP $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/tools/* ~/Arduino/tools/
-					fi
-					echo moving $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/hardware/$core/$VER to $LIBCHECK
-					rm -rf ~/.arduino15/
-				fi
-			done
-		done
-		rm -rf $SLOBER_LOC/eclipse/arduinoPlugin/packages/$val/
-	    
-	done
 	
 	if (! test -e ~/Arduino/hardware/espressif/4point2/) then
 
@@ -141,9 +116,6 @@ function sync {
 		cd tools 
 		python3 get.py
 	fi
-	
-	#git pull origin idf-release/v4.2
-	#git pull https://github.com/espressif/arduino-esp32.git idf-release/v4.2
 	
 
 }
