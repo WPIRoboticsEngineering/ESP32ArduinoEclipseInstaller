@@ -232,7 +232,7 @@ fi
 
 sync
 #Run SLoeber
-$SLOBER_LOC/eclipse/eclipse -verbose
+$SLOBER_LOC/eclipse/eclipse "$@"
 
 sync
 
