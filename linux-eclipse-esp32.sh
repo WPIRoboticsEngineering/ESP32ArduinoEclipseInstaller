@@ -92,17 +92,18 @@ function sync {
 		fi
 	done
 	
+	
+	
 	## toolchain sync
 	if ( test -e ~/.arduino15/) then
 		if ( test -e ~/.arduino15/packages/) then
 			if [ "$(ls -A ~/.arduino15/packages/)" ]; then
-			    rsync -avtP ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
-				#rm -rf ~/.arduino15/
+			    rsync -avtP --exclude '~/.arduino15/packages/esp32/' ~/.arduino15/packages/* $SLOBER_LOC/eclipse/arduinoPlugin/packages/
 			fi
 		fi
 	fi
-	rsync -avtP  $SLOBER_LOC/eclipse/arduinoPlugin/packages/* ~/.arduino15/packages/
 	
+
 	
 	if (! test -e ~/Arduino/hardware/espressif/4point2/) then
 
@@ -187,7 +188,27 @@ if (! test -e $ECLIPSE_LOC) then
 	grep -v "Dosgi.instance.area.default" $SLOBER_LOC/eclipse/eclipse.ini > ~/bin/eclipse.ini
 	echo "-Dosgi.instance.area.default=@user.home/rbe-workspace" >>~/bin/eclipse.ini
 	cp ~/bin/eclipse.ini $SLOBER_LOC/eclipse/
+	
+		File=$SLOBER_LOC/eclipse/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/platform.txt
+	TOOLROOT=$SLOBER_LOC/eclipse/arduinoPlugin/packages/esp32/tools/xtensa-esp32-elf-gcc/
+	TOOLROOT_PY=$SLOBER_LOC/eclipse/arduinoPlugin/packages/esp32/tools/esptool_py/
+	VERSIO_PY=$(ls $TOOLROOT_PY)
+	echo  -e "tools.esptool_py.runtime.tools.esptool_py.path=$TOOLROOT_PY/$VERSIO_PY \n$(cat $File)" >$File
+	VERSION=$(ls $TOOLROOT)
+	echo $VERSION
+	echo  -e "runtime.tools.xtensa-esp32-elf-gcc.path=$TOOLROOT/$VERSION \n$(cat $File)" >$File
+	
+	rsync -avtP  $SLOBER_LOC/eclipse/arduinoPlugin/packages/* ~/.arduino15/packages/
+	# Replace the mbedtls definition so it commpiles
+	sed -i 's/"mbedtls\/esp_config.h"/\\"mbedtls\/esp_config.h\\"/g' $File 
+	# clear stale temp sloeber files
+	rm $SLOBER_LOC/eclipse/arduinoPlugin/packages/esp32/hardware/esp32/1.0.4/platform.sloeber.txt
+	rm ~/.arduino15/packages//esp32/hardware/esp32/1.0.4/platform.sloeber.txt
+	
+	
+
 fi
+
 
 
 if (! test -e ~/bin/SloeberESP32.desktop) then
