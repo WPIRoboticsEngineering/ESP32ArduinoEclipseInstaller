@@ -53,7 +53,7 @@ ArduinoJson                  EspWii                 TeensySimplePacketComs
 BNO055SimplePacketComs       FlashStorage           WiiChuck
 BowlerCom                    HerkulexServo          Yet_Another_Arduino_Wiegand_Library
 DFRobotIRPosition            lx16a-servo
-DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library ESP32_BLE_Arduino "
+DFW                          RBE1001Lib EspMQTTClient wpi-32u4-library ESP32_BLE_Arduino Adafruit_GFX_Library 	     Adafruit_SSD1306        Adafruit_BusIO"
 
 function sync {
 
@@ -161,6 +161,7 @@ if (! test -e ~/bin/ArduinoESP32.desktop) then
 	gio set ~/bin/ArduinoESP32.desktop "metadata::trusted" yes
 	ln -s ~/bin/ArduinoESP32.desktop ~/Desktop/ArduinoESP32.desktop
 	gio set ~/Desktop/ArduinoESP32.desktop "metadata::trusted" yes
+	sudo desktop-file-install ~/Desktop/ArduinoESP32.desktop
 fi
 
 if (! test -e $ECLIPSE_LOC) then
@@ -226,6 +227,7 @@ if (! test -e ~/bin/SloeberESP32.desktop) then
 	gio set ~/bin/SloeberESP32.desktop "metadata::trusted" yes
 	ln -s ~/bin/SloeberESP32.desktop ~/Desktop/SloeberESP32.desktop
 	gio set ~/Desktop/SloeberESP32.desktop "metadata::trusted" yes
+	sudo desktop-file-install ~/Desktop/SloeberESP32.desktop
 fi
 
 
